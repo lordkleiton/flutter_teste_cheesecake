@@ -18,7 +18,7 @@ class Article {
         date = json['date'],
         content = json['content'],
         tags = (json['tags'] as List<dynamic>)
-            .map((e) => Tag.fromJson(json))
+            .map((e) => Tag.fromJson(e))
             .toList(),
         image_url = json['image_url'];
 }
