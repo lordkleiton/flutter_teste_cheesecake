@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 abstract class RestManager {
-  static const String _url = 'https://blog.cheesecakelabs.com/challenge/';
+  static const String _url = 'https://blog.cheesecakelabs.com/challenge';
 
   static Future<List<Map<String, dynamic>>> get() async {
     final http.Response r = await http.get(Uri.parse(_url));

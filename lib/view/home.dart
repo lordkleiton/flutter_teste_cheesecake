@@ -18,6 +18,10 @@ class HomeView extends StatelessWidget {
       });
     }).catchError((e, s) {
       print('deu ruim');
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+
       print(e);
       print(s);
     });
