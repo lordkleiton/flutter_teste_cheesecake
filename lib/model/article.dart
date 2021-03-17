@@ -1,4 +1,4 @@
-import 'package:teste_cheesecake/model/Tag.dart';
+import 'package:teste_cheesecake/model/tag.dart';
 
 class Article {
   final String title;
