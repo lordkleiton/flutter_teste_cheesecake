@@ -1,86 +1,108 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:teste_cheesecake/component/article/selectable_article.dart';
-import 'package:teste_cheesecake/model/article.dart';
-import 'package:teste_cheesecake/network/rest.dart';
+import 'package:teste_cheesecake/model/custom_article.dart';
+import 'package:teste_cheesecake/state/app_state.dart';
 
-class HomeView extends StatefulWidget {
-  HomeView({Key? key}) : super(key: key);
-
-  _State createState() => _State();
-}
-
-class _State extends State<HomeView> {
-  late Future<List<Map<String, dynamic>>> _articles;
-
-  void initState() {
-    super.initState();
-
-    _articles = RestManager.get();
-  }
-
+class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final AppState appState = Provider.of(context);
+    final bool loading = appState.loading;
+    final bool error = appState.error;
+    final List<CustomArticle> articles = appState.articles;
+    final Widget onLoading = Center(
+      child: CircularProgressIndicator(),
+    );
+    final Widget onError = Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('ocorreu um erro ao buscar os artigos'),
+          MaterialButton(
+            child: Text('dnv'),
+            onPressed: () {
+              appState.loadArticles();
+            },
+          ),
+        ],
+      ),
+    );
+    final Widget onData = ListView.separated(
+      separatorBuilder: (contex, index) => Container(
+        padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+        child: Divider(
+          height: 1,
+        ),
+      ),
+      itemCount: articles.length,
+      itemBuilder: (context, index) => SelectableArticleComponent(
+        article: articles[index].article,
+      ),
+    );
+
+    final Widget child = loading
+        ? onLoading
+        : error
+            ? onError
+            : onData;
 
     return Scaffold(
       appBar: AppBar(
         title: Text('News'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.sort),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Sort by:'),
+                    content: Container(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          RadioListTile(
+                            title: Text('Date'),
+                            value: 0,
+                            groupValue: 1,
+                            onChanged: (value) {
+                              print(value);
+                            },
+                          ),
+                          RadioListTile(
+                            title: Text('Title'),
+                            value: 1,
+                            groupValue: 1,
+                            onChanged: (value) {
+                              print(value);
+                            },
+                          ),
+                          RadioListTile(
+                            title: Text('Author'),
+                            value: 2,
+                            groupValue: 1,
+                            onChanged: (value) {
+                              print(value);
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            tooltip: 'Sort',
+          )
+        ],
       ),
       body: Container(
-        height: size.height,
-        width: size.width,
-        child: FutureBuilder<List<Map<String, dynamic>>>(
-          future: _articles,
-          builder: (context, snapshot) {
-            final bool loading =
-                snapshot.connectionState == ConnectionState.waiting;
-
-            if (loading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            final bool error = snapshot.hasError;
-
-            if (error) {
-              return Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('ocorreu um erro ao buscar os artigos'),
-                    MaterialButton(
-                      child: Text('dnv'),
-                      onPressed: () {
-                        setState(() {
-                          _articles = RestManager.get();
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            final List<Map<String, dynamic>> data = snapshot.data!;
-
-            return ListView.separated(
-              separatorBuilder: (contex, index) => Container(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-                child: Divider(
-                  height: 1,
-                ),
-              ),
-              itemCount: data.length,
-              itemBuilder: (context, index) => SelectableArticleComponent(
-                article: Article.fromJson(data[index]),
-              ),
-            );
-          },
-        ),
+        child: child,
       ),
     );
   }
