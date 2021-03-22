@@ -15,6 +15,14 @@ class AppState with ChangeNotifier {
 
   bool _init = false;
 
+  int _sortOrder = 0;
+  int get sortOrder => _sortOrder;
+  set sortOrder(int value) {
+    _sortOrder = value;
+
+    notifyListeners();
+  }
+
   void _setRead(int pos, bool newRead) {
     final CustomArticle _old = _articles[pos];
     final CustomArticle _new =
