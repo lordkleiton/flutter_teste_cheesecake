@@ -8,6 +8,7 @@ void main() {
 class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Teste Cheesecake',
       onGenerateRoute: AppRouter.routeGenerator,
       theme: ThemeData(
