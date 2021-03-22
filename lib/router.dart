@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:teste_cheesecake/enums.dart';
+import 'package:teste_cheesecake/routes.dart';
+import 'package:teste_cheesecake/view/article.dart';
 import 'package:teste_cheesecake/view/home.dart';
 
 abstract class AppRouter {
@@ -8,8 +11,10 @@ abstract class AppRouter {
         settings.arguments as Map<String, dynamic>?;
 
     switch (settings.name) {
-      case '/':
+      case AppRoutes.home:
         return _builder(HomeView());
+      case AppRoutes.article:
+        return _builder(ArticleView(article: args?[Enums.articleArg]));
       default:
         return _builder(_err());
     }
