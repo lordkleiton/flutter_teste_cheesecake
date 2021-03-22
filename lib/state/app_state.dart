@@ -41,11 +41,16 @@ class AppState with ChangeNotifier {
     if (!_init) {
       _init = true;
 
-      loadArticles();
+      loadArticles(notify: false);
     }
   }
 
-  void loadArticles() {
+  void loadArticles({bool notify = true}) {
+    _error = false;
+    _loading = true;
+
+    if (notify) notifyListeners();
+
     RestManager.get().then((list) {
       final List<Article> aux =
           list.map((json) => Article.fromJson(json)).toList();
