@@ -2,7 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:teste_cheesecake/component/text/overflow_text.dart';
+import 'package:teste_cheesecake/component/text/side_by_side_text.dart';
+import 'package:teste_cheesecake/enums.dart';
 import 'package:teste_cheesecake/model/article.dart';
+import 'package:teste_cheesecake/routes.dart';
 
 class SelectableArticleComponent extends StatelessWidget {
   final Article article;
@@ -18,15 +21,15 @@ class SelectableArticleComponent extends StatelessWidget {
     final Size _size = MediaQuery.of(context).size;
     final double _proportion = _size.width * 0.2;
     final double _boxSize = _proportion > _max_size ? _max_size : _proportion;
+    final double _padding = _boxSize * 0.2;
     final double _radius = _boxSize * 0.1;
-    final double _height = _boxSize + _radius;
+    final double _height = _boxSize + _padding;
 
     return InkWell(
       child: Container(
         height: _height,
-        padding: EdgeInsets.all(_radius),
+        padding: EdgeInsets.all(_padding),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.all(
@@ -46,7 +49,7 @@ class SelectableArticleComponent extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                margin: EdgeInsets.only(left: _radius),
+                margin: EdgeInsets.only(left: _padding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -56,15 +59,9 @@ class SelectableArticleComponent extends StatelessWidget {
                       bold: read,
                     ),
                     Spacer(),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: OverflowableTextComponent(
-                            text: article.authors,
-                          ),
-                        ),
-                        Text(article.date),
-                      ],
+                    SideBySideTextComponent(
+                      first: article.authors,
+                      second: article.date,
                     ),
                   ],
                 ),
@@ -73,7 +70,10 @@ class SelectableArticleComponent extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pushNamed(AppRoutes.article,
+            arguments: {Enums.articleArg: article});
+      },
     );
   }
 }
