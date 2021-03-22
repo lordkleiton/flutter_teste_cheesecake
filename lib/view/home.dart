@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:teste_cheesecake/component/article/selectable_article.dart';
+import 'package:teste_cheesecake/component/dialog/sort_dialog.dart';
 import 'package:teste_cheesecake/model/custom_article.dart';
 import 'package:teste_cheesecake/state/app_state.dart';
 
@@ -40,15 +40,12 @@ class HomeView extends StatelessWidget {
       ),
       itemCount: articles.length,
       itemBuilder: (context, index) => SelectableArticleComponent(
-        article: articles[index].article,
+        article: articles[index],
+        index: index,
       ),
     );
-
-    final Widget child = loading
-        ? onLoading
-        : error
-            ? onError
-            : onData;
+    final Widget nonLoading = error ? onError : onData;
+    final Widget child = loading ? onLoading : nonLoading;
 
     return Scaffold(
       appBar: AppBar(
@@ -60,40 +57,7 @@ class HomeView extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (context) {
-                  return AlertDialog(
-                    title: Text('Sort by:'),
-                    content: Container(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          RadioListTile(
-                            title: Text('Date'),
-                            value: 0,
-                            groupValue: 1,
-                            onChanged: (value) {
-                              print(value);
-                            },
-                          ),
-                          RadioListTile(
-                            title: Text('Title'),
-                            value: 1,
-                            groupValue: 1,
-                            onChanged: (value) {
-                              print(value);
-                            },
-                          ),
-                          RadioListTile(
-                            title: Text('Author'),
-                            value: 2,
-                            groupValue: 1,
-                            onChanged: (value) {
-                              print(value);
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                  );
+                  return SortDialogComponent();
                 },
               );
             },
