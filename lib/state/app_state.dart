@@ -18,10 +18,12 @@ class AppState with ChangeNotifier {
   set sortOrder(int value) {
     _sortOrder = value;
 
+    _articles = AppUtils.sortArticles(_articles, _sortOrder);
+
     notifyListeners();
   }
 
-  final List<CustomArticle> _articles = [];
+  List<CustomArticle> _articles = [];
   List<CustomArticle> get articles =>
       AppUtils.sortArticles(_articles, _sortOrder);
 
@@ -62,10 +64,12 @@ class AppState with ChangeNotifier {
     if (notify) notifyListeners();
 
     RestManager.get().then((list) {
-      final List<Article> aux =
+      final List<Article> articlesList =
           list.map((json) => Article.fromJson(json)).toList();
+      final List<CustomArticle> customArticles =
+          articlesList.map((a) => CustomArticle(article: a)).toList();
 
-      _articles.addAll(aux.map((a) => CustomArticle(article: a)));
+      _articles = AppUtils.sortArticles(customArticles, _sortOrder);
 
       _loading = false;
       _error = false;
@@ -74,6 +78,8 @@ class AppState with ChangeNotifier {
     }).catchError((e, s) {
       print(e);
       print(s);
+
+      _articles = [];
 
       _loading = false;
       _error = true;
