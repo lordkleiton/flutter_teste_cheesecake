@@ -26,10 +26,10 @@ abstract class AppRouter {
 
   static Widget _err() => Scaffold(
         appBar: AppBar(
-          title: Text('erro'),
+          title: Text('Error'),
         ),
         body: Center(
-          child: Text('você não devia ter chegado aqui'),
+          child: Text('🤔'),
         ),
       );
 
