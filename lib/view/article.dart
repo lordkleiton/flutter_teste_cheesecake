@@ -6,8 +6,9 @@ import 'package:teste_cheesecake/model/article.dart';
 
 class ArticleView extends StatelessWidget {
   final Article article;
+  final String hero;
 
-  ArticleView({required this.article});
+  ArticleView({required this.article, required this.hero});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class ArticleView extends StatelessWidget {
             expandedHeight: _expandedHeight,
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
-                tag: 'hero-${article.image_url}',
+                tag: hero,
                 child: CachedNetworkImage(
                   imageUrl: article.image_url,
                   fit: BoxFit.cover,

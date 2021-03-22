@@ -24,6 +24,7 @@ class SelectableArticleComponent extends StatelessWidget {
     final double _padding = _boxSize * 0.2;
     final double _radius = _boxSize * 0.1;
     final double _height = _boxSize + _padding;
+    final String _hero = 'hero-${article.image_url}';
 
     return InkWell(
       child: Container(
@@ -39,7 +40,7 @@ class SelectableArticleComponent extends StatelessWidget {
                 width: _boxSize,
                 height: _boxSize,
                 child: Hero(
-                  tag: 'hero-${article.image_url}',
+                  tag: _hero,
                   child: CachedNetworkImage(
                     imageUrl: article.image_url,
                     fit: BoxFit.cover,
@@ -72,7 +73,7 @@ class SelectableArticleComponent extends StatelessWidget {
       ),
       onTap: () {
         Navigator.of(context).pushNamed(AppRoutes.article,
-            arguments: {Enums.articleArg: article});
+            arguments: {Enums.articleArg: article, Enums.articleHero: _hero});
       },
     );
   }

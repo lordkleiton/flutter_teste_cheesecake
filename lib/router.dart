@@ -15,8 +15,10 @@ abstract class AppRouter {
       case AppRoutes.home:
         return _builder(HomeView());
       case AppRoutes.article:
-        return _builder(
-            ArticleView(article: args?[Enums.articleArg] as Article));
+        return _builder(ArticleView(
+          article: args?[Enums.articleArg] as Article,
+          hero: args?[Enums.articleHero] as String,
+        ));
       default:
         return _builder(_err());
     }
