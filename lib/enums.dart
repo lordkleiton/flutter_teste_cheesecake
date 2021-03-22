@@ -1,4 +1,1 @@
-abstract class Enums {
-  static const String articleArg = 'article';
-  static const String articleHero = 'hero';
-}
+enum SortEnums { date, title, author }

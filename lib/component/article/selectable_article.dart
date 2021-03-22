@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:teste_cheesecake/component/text/overflow_text.dart';
 import 'package:teste_cheesecake/component/text/side_by_side_text.dart';
-import 'package:teste_cheesecake/enums.dart';
+import 'package:teste_cheesecake/consts.dart';
 import 'package:teste_cheesecake/model/article.dart';
 import 'package:teste_cheesecake/routes.dart';
 
@@ -72,8 +72,10 @@ class SelectableArticleComponent extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.of(context).pushNamed(AppRoutes.article,
-            arguments: {Enums.articleArg: article, Enums.articleHero: _hero});
+        Navigator.of(context).pushNamed(AppRoutes.article, arguments: {
+          AppConsts.articleArg: article,
+          AppConsts.articleHero: _hero
+        });
       },
     );
   }
