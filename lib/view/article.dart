@@ -12,7 +12,12 @@ class ArticleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
+    final double _basePadding = 10.0;
+    final double _verticalPadding = _basePadding * 5;
     final double _expandedHeight = _size.height * 0.4;
+    final String _tags = article.tags
+        .map((e) => e.label)
+        .reduce((value, element) => '$value, $element');
 
     return Scaffold(
       body: CustomScrollView(
@@ -33,7 +38,7 @@ class ArticleView extends StatelessWidget {
           SliverToBoxAdapter(
             child: Container(
               width: _size.width,
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(_basePadding),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -47,18 +52,30 @@ class ArticleView extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   Container(
-                    padding: EdgeInsets.only(top: 10, bottom: 50),
+                    padding: EdgeInsets.only(top: _basePadding),
                     child: SideBySideTextComponent(
                       first: article.authors,
                       second: article.date,
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(10),
-                    height: 2000,
+                    padding: EdgeInsets.only(
+                      left: _basePadding,
+                      right: _basePadding,
+                      top: _verticalPadding,
+                      bottom: _verticalPadding,
+                    ),
                     child: Text(
                       article.content,
                       style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Icon(Icons.tag),
+                        Text(_tags),
+                      ],
                     ),
                   ),
                 ],
