@@ -2,11 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:teste_cheesecake/model/article.dart';
 import 'package:teste_cheesecake/model/custom_article.dart';
 import 'package:teste_cheesecake/network/rest.dart';
+import 'package:teste_cheesecake/utils.dart';
 
 class AppState with ChangeNotifier {
-  final List<CustomArticle> _articles = [];
-  List<CustomArticle> get articles => _articles.toList();
-
   bool _loading = true;
   bool get loading => _loading;
 
@@ -22,6 +20,10 @@ class AppState with ChangeNotifier {
 
     notifyListeners();
   }
+
+  final List<CustomArticle> _articles = [];
+  List<CustomArticle> get articles =>
+      AppUtils.sortArticles(_articles, _sortOrder);
 
   void _setRead(int pos, bool newRead) {
     final CustomArticle _old = _articles[pos];
