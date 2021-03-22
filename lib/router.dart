@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:teste_cheesecake/enums.dart';
+import 'package:teste_cheesecake/model/article.dart';
 import 'package:teste_cheesecake/routes.dart';
 import 'package:teste_cheesecake/view/article.dart';
 import 'package:teste_cheesecake/view/home.dart';
@@ -14,7 +15,8 @@ abstract class AppRouter {
       case AppRoutes.home:
         return _builder(HomeView());
       case AppRoutes.article:
-        return _builder(ArticleView(article: args?[Enums.articleArg]));
+        return _builder(
+            ArticleView(article: args?[Enums.articleArg] as Article));
       default:
         return _builder(_err());
     }
