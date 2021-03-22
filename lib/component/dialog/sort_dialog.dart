@@ -29,6 +29,8 @@ class SortDialogComponent extends StatelessWidget {
                   groupValue: sortOrder,
                   onChanged: (value) {
                     appState.sortOrder = value as int;
+
+                    Navigator.of(context).pop();
                   },
                 );
               },
