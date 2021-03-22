@@ -8,7 +8,7 @@ abstract class RestManager {
     final http.Response r = await http.get(Uri.parse(_url));
 
     if (r.statusCode == 200) {
-      return (jsonDecode(r.body) as List<dynamic>)
+      return (jsonDecode(utf8.decode(r.bodyBytes)) as List<dynamic>)
           .map((e) => e as Map<String, dynamic>)
           .toList();
     } else {
